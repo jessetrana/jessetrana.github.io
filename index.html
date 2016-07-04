@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="js/knockout-3.0.0.js" ></script>
+<script src="posts/load.js" ></script>
+<script type="text/javascript">
+var RootViewModel = function()
+{
+	var self = this;
+	self.posts = ko.observableArray([]);
+	self.stars = ko.observableArray([]);
+}
+
+var model=null;
+window.onload = function()
+{
+	model = new RootViewModel();
+	loadPosts();
+	
+	var r=12354;
+	var m = 7919;
+	for(var i=0; i<100; i++)
+	{
+		r = (r*r)%m;
+		var x = r%100;
+		r = (r*r)%m;
+		var y = r%100;
+		r = (r*r)%m;
+		var scale = 10 + (r%10);
+		model.stars.push({
+			'x':x,
+			'y':y,
+			'scale':scale
+			});
+	}
+	ko.applyBindings(model);
+}
+
+
+</script>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+<!-- ko foreach: stars -->
+<img src="img/stars.png" class="stars" data-bind="style: { left: x+'%', top: y+'%', width: scale+'vh', height: scale+'vh' }"></img>
+<!-- /ko -->
+<div id="sidebar">
+	<img src="img/logo.png" id="logo" />
+	<div class="accent1_border accent1_background blurb">
+		<h2>Welcome!</h2>
+		Make worksheets <i>fast</i><br />with Infinisheets!<br />
+		<a class="accent3_foreground headline" href="#samples">~Sample Worksheets~</a><br />
+		<a class="accent2_foreground headline" href="#sneak_peek">~Learn how in 2 minutes!~</a><br />
+		<a class="accent1_foreground headline" href="http://www.teacherspayteachers.com/Store/Infinisheets">~Find us at TpT~</a><br />
+	</div>
+	<div class="accent2_border accent2_background blurb">
+		<img src="img/Karen.png" class="blurb_pic" /><span class="blurb_name">Karen<br /><span class="blurb_title">Special ed teacher</span></span><br />
+		<span class="blurb_content">Karen loves helping teachers help kids learn the things they need for life.</span>
+	</div>
+	<div class="accent3_border accent3_background blurb">
+		<img src="img/Jesse.png" class="blurb_pic" /><span class="blurb_name">Jesse<br /><span class="blurb_title">Software writer</span></span><br />
+		<span class="blurb_content">Jesse has a passion for making teachers' lives better through software.</span>
+	</div>
+</div>
+<!--
+<div id="posts">
+	<ul class="post_picker" data-bind="foreach: posts">
+		<li class="post_picker_li"><a class="posts_picker_item" data-bind="text: title, style: { 'font-size': ($index()<5 ? (45-$index()*5) : 20)+'px' }, attr: { href: '#'+id}, css: {'accent1_background': $index()%3==0, 'accent2_background': $index()%3==1, 'accent3_background': $index()%3==2}"></a></li>
+	</ul>
+</div>
+-->
+<div id="content">
+	<!-- ko foreach: posts -->
+	<div class="post" data-bind="attr: {id: id}">
+		<h1 data-bind="text: title"></h1>
+		<div data-bind="html: content"></div>
+	</div>
+	<div class="post_separator" ></div>
+	<!-- /ko -->
+</div>
+</body>
+</html>
